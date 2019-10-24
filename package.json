@@ -1,11 +1,12 @@
 {
   "name": "yapi-plugin-webhook",
-  "version": "1.0.0",
-  "description": "",
+  "version": "1.0.5",
+  "description": "yapi的网络钩子监控器触发插件",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC"
+  "author": "lanweifeng",
+  "license": "ISC",
+  "keywords": "yapi webhook"
 }

@@ -1,8 +1,13 @@
 const yapi = require('yapi.js');
 //const mongoose = require('mongoose');
 const Config = require('./utils/config');
+const Monitor = require('./utils/monitor');
 
 module.exports = function(options) {
+  if(!options || !Object.keys(options).length > 0){
+    console.log('请配置webhook！', options);
+    return;
+  }
   // 获取配置文件中的hook监听器
   Config.instance = options;
 
@@ -27,8 +32,20 @@ module.exports = function(options) {
     }
   }
 
-  // 绑定接口修改hook
-  this.bindHook('interface_update', function(router) {
-    console.log('成功触发接口更新监听器!');
+  // 生成监听器实例
+  let monitors = [];
+  (Object.keys(options)).forEach(monitor => {
+    if(options[monitor].status === false) return;
+    console.log('new monitor', options[monitor]);
+    monitors.push(new Monitor(options[monitor]));
+  })
+
+  //绑定事件
+  monitors.forEach(monitor => {
+    monitor.events.forEach(event => {
+      this.bindHook(event, (cbArgs)=>{
+        monitor[event](cbArgs);
+      })
+    })
   });
 }
