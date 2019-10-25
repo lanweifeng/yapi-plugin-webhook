@@ -1,7 +1,7 @@
 yapi-plugin-webhook
 ===
 
-yapi地址：
+yapi地址：https://github.com/YMFE/yapi \
 本插件主要功能：可以为yapiHook配置监听器，当yapiHook被触发时，发送相应的数据到指定的监听器。
 该插件支持添加多个监听器，且可以自由配置监听器是否生效。
 
