@@ -1,6 +1,10 @@
-const axios = require('axios');
+const Config = require('./config');
+const yapi = require('yapi.js');
+const UserModel = require('models/user');
+const projectModel = require('models/project.js');
+const { showDiff } = require('./index');
 
-var hooksMap = {
+let hooksMap = {
   /**
    * 第三方sso登录钩子，暂只支持设置一个
    */
@@ -70,70 +74,132 @@ var hooksMap = {
 /********************后端钩子事件***********************************/
 
 
-function third_login(){
+async function third_login(){
 
 }
 
-function interface_add(cbArgs){
-  console.log('触发了新增接口的监听器!', cbArgs);
-  console.log('当前钩子url:',this.url);
-  cbArgs.event = 'yapi_interface_add'
-  this.sendMessage(cbArgs);
+async function interface_add(cbArgs){
+  console.log('触发了新增接口的hook!当前监听器url:',this.url);
+  let sendData = JSON.parse(JSON.stringify(cbArgs))
+  sendData.event = 'yapi_interface_add';
+  sendData.link = `http://${this.yapiAdress}:${this.yapiPort? this.yapiPort : (Config.port || '3000')}/project/${sendData.project_id}/interface/api/${sendData._id}`;
+  if(sendData.uid){
+    let userModel = yapi.getInst(UserModel);
+    let user = await userModel.findById(sendData.uid);
+    sendData.user_name = user.username;
+  }
+  if(sendData.project_id){
+    let projectuserModel = yapi.getInst(projectModel);
+    let project = await projectuserModel.get(sendData.project_id);
+    sendData.project_name = project.name;
+  }
+  console.log('发送数据', sendData)
+  this.sendMessage(sendData);
 }
 
-function interface_del(){
+async function interface_del(delData){
+  console.log('触发了删除接口的hook!当前监听器url:',this.url, delData);
+  let sendData = {};
+  if(typeof delData === 'object'){
+    sendData = JSON.parse(JSON.stringify(delData));
+  }else {
+    sendData._id = delData;
+  }
+  sendData.event = 'yapi_interface_del';
+
+  if(sendData.uid){
+    let userModel = yapi.getInst(UserModel);
+    let user = await userModel.findById(sendData.uid);
+    sendData.user_name = user.username;
+  }
+  if(sendData.project_id){
+    let projectuserModel = yapi.getInst(projectModel);
+    let project = await projectuserModel.get(sendData.project_id);
+    sendData.project_name = project.name;
+  }
+  console.log('发送数据', sendData)
+  this.sendMessage(sendData);
+}
+
+async function interface_update(upData){
+  console.log('触发了更新接口的hook!当前监听器url:',this.url);
+  let sendData = {};
+  let userModel = {};
+  let projectuserModel = {};
+  if(typeof upData === 'object'){
+    userModel = yapi.getInst(UserModel);
+    projectuserModel = yapi.getInst(projectModel);
+    sendData = JSON.parse(JSON.stringify(upData));
+    sendData.diff = showDiff(upData);
+    sendData.link = `http://${this.yapiAdress}:${this.yapiPort? this.yapiPort : (Config.port || '3000')}/project/${sendData.project_id}/interface/api/${sendData.current._id}`;
+  }else {
+    sendData._id = upData;
+  }
+  sendData.event = 'yapi_interface_update';
+
+  if(sendData.current && sendData.current.uid){
+    let user = await userModel.findById(sendData.current.uid);
+    sendData.user_name = user.username;
+  }
+
+  if(sendData.current && sendData.current.edit_uid){
+    let user = await userModel.findById(sendData.current.uid);
+    sendData.edit_name = user.username;
+  }
+
+  if(sendData.current && sendData.current.project_id){
+    let project = await projectuserModel.get(sendData.current.project_id);
+    sendData.project_name = project.name;
+  }
+  console.log('发送数据', sendData)
+  this.sendMessage(sendData);
+}
+
+async function interface_list(){
 
 }
 
-function interface_update(){
+async function interface_get() {
 
 }
 
-function interface_list(){
+async function project_add() {
 
 }
 
-function interface_get() {
+async function project_up() {
 
 }
 
-function project_add() {
+async function project_get() {
 
 }
 
-function project_up() {
+async function project_del() {
 
 }
 
-function project_get() {
+async function export_markdown() {
 
 }
 
-function project_del() {
+async function mock_after() {
 
 }
 
-function export_markdown() {
+async function add_router() {
 
 }
 
-function mock_after() {
+async function add_ws_router() {
 
 }
 
-function add_router() {
+async function import_data() {
 
 }
 
-function add_ws_router() {
-
-}
-
-function import_data() {
-
-}
-
-function add_notice() {
+async function add_notice() {
 
 }
 
