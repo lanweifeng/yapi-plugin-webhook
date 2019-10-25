@@ -1,5 +1,4 @@
 const yapi = require('yapi.js');
-//const mongoose = require('mongoose');
 const Config = require('./utils/config');
 const Monitor = require('./utils/monitor');
 
@@ -17,16 +16,12 @@ module.exports = function(options) {
     const args = Array.prototype.slice.call(arguments);
     originalSaveLog.apply(this, args);
     try {
-      console.log('yapi-plugin-webhook: 开始运行')
       yapi.commons.log('yapi-plugin-webhook: 开始运行');
       const logData = args[0];
       if (!logData || logData.type != 'project') {
         yapi.commons.log('yapi-plugin-webhook: 日志不是 project 类型，不记录。');
         return;
       }
-      /*(new SendLogViaDingDingSender(logData)).send().then().catch((err) => {
-        yapi.commons.log(err, 'error');
-      });*/
     } catch(err) {
       yapi.commons.log(err, 'error');
     }
@@ -36,8 +31,8 @@ module.exports = function(options) {
   let monitors = [];
   (Object.keys(options)).forEach(monitor => {
     if(options[monitor].status === false) return;
-    console.log('new monitor', options[monitor]);
-    monitors.push(new Monitor(options[monitor]));
+    console.log(`生成监听器: ${monitor}`, options[monitor]);
+    monitors.push(new Monitor(options[monitor], monitor));
   })
 
   //绑定事件
