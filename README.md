@@ -55,7 +55,7 @@ yapi地址：https://github.com/YMFE/yapi \
 }
 ```
 
-###配置说明
+### 配置说明
 
 * `yapiAdress` 选填，默认就是你部署yapi机器的Ip,如果你是用docker部署的yapi,请填入宿主机的真实Ip
 * `yapiPort` 选填， 默认就是config配置的port， 如果你是用dokcer部署的yapi,请填入你暴露的端口
