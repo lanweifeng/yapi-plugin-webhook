@@ -131,7 +131,7 @@ async function interface_update(upData){
     projectuserModel = yapi.getInst(projectModel);
     sendData = JSON.parse(JSON.stringify(upData));
     sendData.diff = showDiff(upData);
-    sendData.link = `http://${this.yapiAdress}:${this.yapiPort? this.yapiPort : (Config.port || '3000')}/project/${sendData.project_id}/interface/api/${sendData.current._id}`;
+    sendData.link = `http://${this.yapiAdress}:${this.yapiPort? this.yapiPort : (Config.port || '3000')}/project/${sendData.current.project_id}/interface/api/${sendData.current._id}`;
   }else {
     sendData._id = upData;
   }
@@ -139,18 +139,34 @@ async function interface_update(upData){
 
   if(sendData.current && sendData.current.uid){
     let user = await userModel.findById(sendData.current.uid);
-    sendData.user_name = user.username;
+    sendData.current.user_name = user.username;
+  }
+
+  if(sendData.old && sendData.old.uid){
+    let user = await userModel.findById(sendData.old.uid);
+    sendData.old.user_name = user.username;
   }
 
   if(sendData.current && sendData.current.edit_uid){
     let user = await userModel.findById(sendData.current.uid);
-    sendData.edit_name = user.username;
+    sendData.current.edit_name = user.username;
+  }
+
+  if(sendData.old && sendData.old.edit_uid){
+    let user = await userModel.findById(sendData.old.uid);
+    sendData.old.edit_name = user.username;
   }
 
   if(sendData.current && sendData.current.project_id){
     let project = await projectuserModel.get(sendData.current.project_id);
-    sendData.project_name = project.name;
+    sendData.current.project_name = project.name;
   }
+
+  if(sendData.old && sendData.old.project_id){
+    let project = await projectuserModel.get(sendData.old.project_id);
+    sendData.old.project_name = project.name;
+  }
+
   console.log('发送数据', sendData)
   this.sendMessage(sendData);
 }
