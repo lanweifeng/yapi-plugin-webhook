@@ -62,7 +62,7 @@ yapi地址：https://github.com/YMFE/yapi \
 * `url` 必填，监听器的地址
 * `method` 选填， 默认以get方式推送消息到监听器
 * `status` 选填， 默认启用监听器
-* `events` 必填， events是个字符串数组，值是yapi支持的钩子名称
+* `events` 必填， events是个字符串数组，值是yapi支持的钩子名称, 钩子列表https://hellosean1025.github.io/yapi/documents/plugin-hooks.html
 * `desc` 选填， 该监听器的描述
 
 ### 注意
