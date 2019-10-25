@@ -81,7 +81,7 @@ async function third_login(){
 async function interface_add(cbArgs){
   console.log('触发了新增接口的hook!当前监听器url:',this.url);
   let sendData = JSON.parse(JSON.stringify(cbArgs))
-  sendData.event = 'yapi_interface_add';
+  sendData.YApiEvent = 'yapi_interface_add';
   sendData.link = `http://${this.yapiAdress}:${this.yapiPort? this.yapiPort : (Config.port || '3000')}/project/${sendData.project_id}/interface/api/${sendData._id}`;
   if(sendData.uid){
     let userModel = yapi.getInst(UserModel);
@@ -105,7 +105,7 @@ async function interface_del(delData){
   }else {
     sendData._id = delData;
   }
-  sendData.event = 'yapi_interface_del';
+  sendData.YApiEvent = 'yapi_interface_del';
 
   if(sendData.uid){
     let userModel = yapi.getInst(UserModel);
@@ -135,7 +135,7 @@ async function interface_update(upData){
   }else {
     sendData._id = upData;
   }
-  sendData.event = 'yapi_interface_update';
+  sendData.YApiEvent = 'yapi_interface_update';
 
   if(sendData.current && sendData.current.uid){
     let user = await userModel.findById(sendData.current.uid);
