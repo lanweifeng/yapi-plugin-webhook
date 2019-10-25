@@ -1,6 +1,6 @@
 {
   "name": "yapi-plugin-webhook",
-  "version": "1.0.5",
+  "version": "1.1.0",
   "description": "yapi的网络钩子监控器触发插件",
   "main": "index.js",
   "scripts": {
