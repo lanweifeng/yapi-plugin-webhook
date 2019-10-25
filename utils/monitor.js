@@ -40,11 +40,11 @@ class Monitor{
       data: sendData,
     })
       .then(res => {
-        console.log(`事件${sendData.event}发送到${this.url}成功！\n响应状态${res.status}`);
+        console.log(`事件${sendData.YApiEvent}发送到${this.url}成功！\n响应状态${res.status}`);
         console.log('响应头', res.headers)
       })
       .catch(err => {
-        console.log(`事件${sendData.event}发送到${this.url}失败！\n失败报错${err}`);
+        console.log(`事件${sendData.YApiEvent}发送到${this.url}失败！\n失败报错${err}`);
       });
   }
 
