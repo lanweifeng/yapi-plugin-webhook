@@ -130,6 +130,20 @@ exports.showDiff = (curDiffData) => {
       });
     }
 
+    if (current.isGql !== old.isGql) {
+      diffView.push({
+        title: '是否graphql',
+        content: diffText(old.tag, current.tag)
+      });
+    }
+
+    if (current.gqlOpera !== old.gqlOpera) {
+      diffView.push({
+        title: 'graphql请求类型',
+        content: diffText(old.tag, current.tag)
+      });
+    }
+
     diffView.push({
       title: '接口维护人',
       content: diffArray(old.beHead, current.beHead)
