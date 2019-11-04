@@ -146,7 +146,7 @@ exports.showDiff = (curDiffData) => {
 
     diffView.push({
       title: '接口维护人',
-      content: diffArray(old.beHead, current.beHead)
+      content: diffText(old.beHead, current.beHead)
     });
 
     diffView.push({
