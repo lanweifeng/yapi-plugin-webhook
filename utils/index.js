@@ -130,12 +130,15 @@ exports.showDiff = (curDiffData) => {
       });
     }
 
-    if (current.beHead !== old.beHead) {
-      diffView.push({
-        title: '后端负责人',
-        content: diffText(old.beHead, current.beHead)
-      });
-    }
+    diffView.push({
+      title: '接口维护人',
+      content: diffArray(old.beHead, current.beHead)
+    });
+
+    diffView.push({
+      title: '接口联调人',
+      content: diffArray(old.interfaceUser, current.interfaceUser)
+    });
 
     diffView.push({
       title: 'Request Path Params',
